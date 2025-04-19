@@ -128,7 +128,7 @@ public:
             forecastDate.erase(remove(forecastDate.begin(), forecastDate.end(), ' '), forecastDate.end());
             date.erase(remove(date.begin(), date.end(), ' '), date.end());
 
-            cout << "Comparing input date: " << date << " with forecast date: " << forecastDate << endl;  // Debugging line
+            //cout << "Comparing input date: " << date << " with forecast date: " << forecastDate << endl;  // Debugging line
             if (forecastDate == date) {
                 cout << "\nForecast for " << city.getcityName() << ", " << city.getcountryName() << " on " << date << ":\n";
                 w.displayWeather();
