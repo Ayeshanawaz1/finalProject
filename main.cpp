@@ -40,45 +40,72 @@ public:
 
 class Weather {
 	private:
-	    string weatherCondition, dateOfForecast;
+	    string weatherCondition, year, month, day;
 	    float currentTemperature, windSpeed;
 	    int humidityPercentage;
+	    vector<string> hours;
+		vector<string> hourConditions;
+		vector<float> hourTemperatures;
+		vector<int> hourHumidities;
+		vector<float> hourWinds;
 	
 	public:
-	    Weather(string weather = "", float temperature = 0.0, int humidity = 0, float wind = 0.0, string date = "") {
+	    Weather(string weather = "", float temperature = 0.0, int humidity = 0, float wind = 0.0, string _year = "",
+		string _month = "", string _day = "") {
 	        weatherCondition = weather;
 	        currentTemperature = temperature;
 	        humidityPercentage = humidity;
 	        windSpeed = wind;
-	        dateOfForecast = date;
+	        year = _year;
+	        month = _month;
+	        day = _day;
+//	        dateOfForecast = date;
 	    }
 	
 	    string getdateOfForecast() 
 		{ 
-			return dateOfForecast; 
+			return year + "-" + month + "-" + day; 
 		}
 		
 	    void displayWeather() {
-	        cout << "Date: " << dateOfForecast << endl;
+	        cout << "Date: " << year << "/" << month << "/" << day << endl;
 	        cout << "Condition: " << weatherCondition << endl;
 	        cout << "Temperature: " << currentTemperature << "°C" << endl;
 	        cout << "Humidity: " << humidityPercentage << "%" << endl;
 	        cout << "Wind Speed: " << windSpeed << " km/h" << endl;
 	        cout << "-----------------------------" << endl;
 	    }
+	    
+	    void addHourlyData(string time, string condition, float temp, int humidity, float wind) 
+		{
+		    hours.push_back(time);
+		    hourConditions.push_back(condition);
+		    hourTemperatures.push_back(temp);
+		    hourHumidities.push_back(humidity);
+		    hourWinds.push_back(wind);
+		}
+		
+		void displayHourlyForecast() 
+		{
+		    cout << "\nHOURLY FORECAST:\n------------------------\n";
+		    for (size_t i = 0; i < hours.size(); i++) 
+			{
+		        cout << "Time: " << hours[i] << endl;
+		        cout << "Condition: " << hourConditions[i] << endl;
+		        cout << "Temperature: " << hourTemperatures[i] << "°C" << endl;
+		        cout << "Humidity: " << hourHumidities[i] << "%" << endl;
+		        cout << "Wind Speed: " << hourWinds[i] << " km/h" << endl;
+		        cout << "-----------------------------\n";
+		    }
+		}
+
 };
 
-//class HourlyWeather : public  Weather
-//{
-//	void displayHourlyWeather()
-//	{
-//		cout << "Hourly Weather: ";
-//	}
-//};
-//
-//class WeeklyWeather : public Weather
-//{
-//	cout << "Weekly weather: ";
+string toLower(const string& str) {
+    string lowerStr = str;
+    transform(lowerStr.begin(), lowerStr.end(), lowerStr.begin(), ::tolower);
+    return lowerStr;
+}
 
 class Forecast {
 	private:
@@ -95,7 +122,7 @@ class Forecast {
     		weather.push_back(w);
 		}
 		
-	    void displayForecast() {
+	    void displayForecastByWeek() {
 	        cout << "\nForecast for " << city.getcityName() << ", " << city.getcountryName() << ":\n";
 	        cout << "=============================\n";
 	        for (int i = 0; i < weather.size(); i++) {
@@ -104,9 +131,11 @@ class Forecast {
 	        }
 	    }
 
-		void displayForecastByDate(string date) 
+		void displayForecastByDate(string year, string month, string day) 
 		{
 			bool found = false;
+			string inputDate = year + "-" + month + "-" + day;
+			
 			for ( Weather& w : weather) 
 			{
 				// Trim any extra spaces in both date values
@@ -114,11 +143,12 @@ class Forecast {
 //				forecastDate.erase(remove(forecastDate.begin(), forecastDate.end(), ' '), forecastDate.end());
 //			    date.erase(remove(date.begin(), date.end(), ' '), date.end());
 			
-			    cout << "Comparing input date: " << date << " with forecast date: " << forecastDate << endl;  // Debugging line
-			    if (forecastDate == date) 
+			    cout << "Comparing input date: " << inputDate
+				<< " with forecast date: " << forecastDate << endl;  // Debugging line
+			    
+				if (forecastDate == inputDate)
 				{
-			    cout << "\nForecast for " << city.getcityName() << ", " << city.getcountryName() 
-				<< ":\n";
+			    cout << "\nForecast for " << city.getcityName() << ", " << city.getcountryName() << ":\n";
 			    w.displayWeather();
 			    found = true;
 			    break;
@@ -126,9 +156,32 @@ class Forecast {
 			}
 			    if (!found) 
 				{
-			        cout << "No forecast available for " << date << " in " << city.getcityName() <<
-					", " << city.getcountryName() << "." << endl;
+			        cout << "No forecast available for " << year << "/" << month << "/" <<day << " in " 
+					<< city.getcityName() << ", " << city.getcountryName() << "." << endl;
 			    }
+		}
+		
+		void displayHourlyForecast(string year, string month, string day) 
+		{
+		    string inputDate = year + "-" + month + "-" + day;
+		    bool found = false;
+	
+			for (Weather& w : weather) 
+			{
+			    if (w.getdateOfForecast() == inputDate) 
+				{
+			        cout << "\nHourly Forecast for " << city.getcityName() << ", " << city.getcountryName() << ":\n";
+			        w.displayHourlyForecast();
+			        found = true;
+			        break;
+			    }
+			}
+			
+			if (!found) 
+			{
+			    cout << "No hourly forecast available for " << year << "/" << month << "/" << day << " in " 
+			    << city.getcityName() << ", " << city.getcountryName() << "." << endl;
+			}
 		}
 };
 
@@ -181,25 +234,44 @@ class WeatherSystem {
 	        try {
 	            json data = json::parse(response);
 	            
-	            string actualCity = data["location"]["name"];
-        		string actualCountry = data["location"]["country"];
-
-        		if (actualCity != cityName || actualCountry != countryName) {
-            		cout <<  actualCity << " was not found in " << countryName << "." << endl;
-            		
-					exit(1);  
-        		}
+	            string inputCityLower = toLower(cityName);
+				string inputCountryLower = toLower(countryName);
+				
+				string actualCity = data["location"]["name"];
+				string actualCountry = data["location"]["country"];
+				
+				string actualCityLower = toLower(actualCity);
+				string actualCountryLower = toLower(actualCountry);
+				
+				if (actualCityLower != inputCityLower || actualCountryLower != inputCountryLower) {
+				    cout << actualCity << " was not found in " << countryName << "." << endl;
+				    exit(1);  // Exit if mismatch
+				}
         
 	            auto days = data["forecast"]["forecastday"];
 	
 	            for (auto& day : days) {
-	                string date = day["date"];
+	            	string date = day["date"];
+	                string year = date.substr(0, 4);
+					string month = date.substr(5, 2);
+					string dayPart = date.substr(8, 2);
 	                string condition = day["day"]["condition"]["text"];
 	                float temp = day["day"]["avgtemp_c"];
 	                int humidity = day["day"]["avghumidity"];
 	                float wind = day["day"]["maxwind_kph"];
 	
-	                Weather w(condition, temp, humidity, wind, date);
+	                Weather w(condition, temp, humidity, wind, year, month, dayPart);
+	                
+	                for (auto& hour : day["hour"]) 
+					{
+				        string time = hour["time"];
+				        string h_condition = hour["condition"]["text"];
+				        float h_temp = hour["temp_c"];
+				        int h_humidity = hour["humidity"];
+				        float h_wind = hour["wind_kph"];
+				
+				        w.addHourlyData(time, h_condition, h_temp, h_humidity, h_wind);
+				    }
 	                forecast.addWeather(w);
 	            }
 	
@@ -210,7 +282,6 @@ class WeatherSystem {
 	        return forecast;
 	    }
 };
-
 
 int main() 
 {
@@ -233,19 +304,39 @@ int main()
     cout << "\nDo you want the forecast for:\n";
     cout << "1. Whole Week\n";
     cout << "2. Specific Day\n";
+    cout << "3. Hourly Forecast\n";
     cout << "Enter your choice (1 or 2): ";
     int choice;
     cin >> choice;
     cin.ignore();  // flush newline
 
     if (choice == 1) {
-        f1.displayForecast();
-    } else if (choice == 2) {
-        string date;
-        cout << "Enter date (YYYY-MM-DD): ";
-        getline(cin, date);
-        f1.displayForecastByDate(date);
-    } else {
+        f1.displayForecastByWeek();
+    } 
+	else if (choice == 2) 
+	{
+        string year, month, day;
+		cout << "Enter Year (YYYY): ";
+		getline(cin, year);
+		cout << "Enter Month (MM): ";
+		getline(cin, month);
+		cout << "Enter Day (DD): ";
+		getline(cin, day);
+        f1.displayForecastByDate(year, month, day);
+    } 
+    else if (choice == 3)
+    {
+    	string year, month, day;
+		cout << "Enter Year (YYYY): ";
+		getline(cin, year);
+		cout << "Enter Month (MM): ";
+		getline(cin, month);
+		cout << "Enter Day (DD): ";
+		getline(cin, day);
+        f1.displayHourlyForecast(year, month, day);
+	}
+	else 
+	{
         cout << "Invalid choice. Please restart and choose 1 or 2." << endl;
     }
 
