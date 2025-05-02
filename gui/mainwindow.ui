@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>285</width>
+    <height>520</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>-10</y>
+      <width>891</width>
+      <height>671</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">this-&gt;setStyleSheet(
+    &quot;QMainWindow {&quot;
+    &quot;   background-image: url(:/images/weather.png);&quot;
+    &quot;   background-repeat: no-repeat;&quot;
+    &quot;   background-position: center;&quot;
+    &quot;   background-attachment: fixed;&quot;
+    &quot;   background-size: cover;&quot;
+    &quot;}&quot;
+);
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>weather.png</pixmap>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>0</y>
+      <width>241</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/images/cloud.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>240</y>
+      <width>291</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt; font-weight:700; color:#ffffff;&quot;&gt;WEATHER &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>250</x>
+      <y>290</y>
+      <width>281</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:36pt; font-weight:700; color:#ffff00;&quot;&gt;FORECASTS&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>420</y>
+      <width>221</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">ui-&gt;pushButton-&gt;setText(&quot;Welcome&quot;);
+ui-&gt;pushButton-&gt;setStyleSheet(
+    &quot;QPushButton {&quot;
+    &quot;    background-color: #ffccff;&quot;      // Light pink background
+    &quot;    color: #660066;&quot;                 // Dark purple text
+    &quot;    font-size: 24pt;&quot;
+    &quot;    font-weight: bold;&quot;
+    &quot;    border: 3px solid #ff99cc;&quot;      // Pink border
+    &quot;    border-radius: 30px;&quot;            // Oval shape
+    &quot;    padding: 10px 20px;&quot;
+    &quot;}&quot;
+    &quot;QPushButton:hover {&quot;
+    &quot;    background-color: #ffe6f0;&quot;      // Lighter on hover
+    &quot;    border-color: #ff66b2;&quot;
+    &quot;}&quot;
+);
+</string>
+    </property>
+    <property name="text">
+     <string>Welcome</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>285</width>
+     <height>18</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
