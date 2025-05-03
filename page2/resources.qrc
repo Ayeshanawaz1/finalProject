@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>cloud.png</file>
+        <file>weather.png</file>
+        <file>glass.png</file>
+    </qresource>
+</RCC>
